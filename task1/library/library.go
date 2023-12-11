@@ -20,13 +20,19 @@ func (b Book) GetName() string {
 	return b.Name
 }
 func (b Book) String() string {
-
-	return fmt.Sprintf("{Id: %d, Name: \"%s\", Author: %s}\n", *b.id, b.Name, b.Author)
+	f := func(id *uint32) uint32 {
+		if id == nil {
+			return 0
+		} else {
+			return *id
+		}
+	}
+	return fmt.Sprintf("{Id: %d, Name: \"%s\", Author: %s}\n", f(b.id), b.Name, b.Author)
 }
 
 // //////////////////////////////////////////////--Storage
 type Storage interface {
-	AddBook(Book) error
+	AddBook(*Book) error
 	FindBook(name string) *Book
 	getBooks() []Book
 }
@@ -35,7 +41,7 @@ type SliceStorage struct {
 	books []Book
 }
 
-func (s *SliceStorage) AddBook(b Book) error {
+func (s *SliceStorage) AddBook(b *Book) error {
 	for _, v := range s.books {
 		if strings.EqualFold(b.Name, v.Name) {
 			return ErrBookElreadyExsists
@@ -45,7 +51,7 @@ func (s *SliceStorage) AddBook(b Book) error {
 	bid := hash(b.Name)
 	b.id = &bid
 
-	s.books = append(s.books, b)
+	s.books = append(s.books, *b)
 
 	return nil
 }
@@ -60,7 +66,7 @@ func (s *SliceStorage) FindBook(name string) *Book {
 	return nil
 }
 
-func (s SliceStorage) getBooks() []Book {
+func (s *SliceStorage) getBooks() []Book {
 	return s.books
 }
 
@@ -68,7 +74,7 @@ type MapStorage struct {
 	books map[uint32]Book
 }
 
-func (s *MapStorage) AddBook(b Book) error {
+func (s *MapStorage) AddBook(b *Book) error {
 
 	if s.books == nil {
 		s.books = make(map[uint32]Book)
@@ -82,7 +88,7 @@ func (s *MapStorage) AddBook(b Book) error {
 
 	bid := hash(b.Name)
 	b.id = &bid
-	s.books[bid] = b
+	s.books[bid] = *b
 
 	return nil
 }
@@ -96,7 +102,7 @@ func (s *MapStorage) FindBook(name string) *Book {
 	return nil
 }
 
-func (s MapStorage) getBooks() []Book {
+func (s *MapStorage) getBooks() []Book {
 	sl := make([]Book, 0, len(s.books))
 	for _, v := range s.books {
 		sl = append(sl, v)
