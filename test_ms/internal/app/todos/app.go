@@ -45,6 +45,7 @@ func (a *App) newHttpServer() {
 	router := mux.NewRouter()
 	router.HandleFunc("/api/v1/todo/{id}", a.server.Get)
 	router.HandleFunc("/api/v1/todos", a.server.GetAll)
+	router.HandleFunc("/api/v1/add", a.server.Add).Methods("POST").Headers("Content-Type", "application/json")
 
 	a.srv = &http.Server{
 		Handler: router,

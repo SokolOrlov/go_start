@@ -33,6 +33,15 @@ func (r *TodoRepository) Get(ctx context.Context, id int) (*models.Todo, error) 
 }
 
 func (r *TodoRepository) Add(ctx context.Context, t *models.Todo) error {
+
+	id := 1
+
+	if len(r.db) > 0 {
+		id = r.db[len(r.db)-1].Id + 1
+	}
+
+	t.Id = id
+
 	r.db = append(r.db, *t)
 	return nil
 }

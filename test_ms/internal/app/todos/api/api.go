@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 	todoService "test_ms/internal/app/todos/service"
+	"test_ms/internal/pkg/models"
 
 	"github.com/gorilla/mux"
 )
@@ -58,4 +59,25 @@ func (s *Server) Get(w http.ResponseWriter, req *http.Request) {
 	if err := json.NewEncoder(w).Encode(product); err != nil {
 		return
 	}
+}
+
+func (s *Server) Add(w http.ResponseWriter, req *http.Request) {
+	ctx := req.Context()
+
+	var t Todo
+
+	err := json.NewDecoder(req.Body).Decode(&t)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	err = s.todoService.Add(ctx, &models.Todo{Task: t.Task, Complete: t.Complete})
+	if err != nil {
+		return
+	}
+
+	// w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+
 }
