@@ -28,6 +28,8 @@ func NewApp() *App {
 
 func (a *App) Init(ctx context.Context, cfg *config.Config) error {
 
+	a.cfg = cfg
+
 	db := repo.NewDB()
 
 	r := todos.NewRepo(db)
