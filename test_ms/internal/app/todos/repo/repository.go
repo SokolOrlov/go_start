@@ -1,11 +1,11 @@
-package todoService
+package repo
 
 import (
 	"context"
-	"test_ms/internal/pkg/models"
+	"test_ms/internal/models"
 )
 
-type ITodoRepository interface {
+type IRepository interface {
 	GetAll(context.Context) ([]models.Todo, error)
 	Get(context.Context, int) (*models.Todo, error)
 	Add(context.Context, *models.Todo) error

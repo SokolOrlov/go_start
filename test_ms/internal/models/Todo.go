@@ -5,5 +5,3 @@ type Todo struct {
 	Task     string
 	Complete bool
 }
-
-type Todos []Todo

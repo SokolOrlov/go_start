@@ -8,9 +8,9 @@ import (
 	"net/http"
 	"test_ms/internal/app/todos/api"
 	"test_ms/internal/app/todos/config"
-	"test_ms/internal/app/todos/repo"
-	"test_ms/internal/app/todos/repo/todos"
+	inmemory "test_ms/internal/app/todos/repo/todos/inMemory"
 	todoService "test_ms/internal/app/todos/service"
+	"test_ms/internal/models"
 
 	"github.com/gorilla/mux"
 )
@@ -30,9 +30,9 @@ func (a *App) Init(ctx context.Context, cfg *config.Config) error {
 
 	a.cfg = cfg
 
-	db := repo.NewDB()
+	db := initDB()
 
-	r := todos.NewRepo(db)
+	r := inmemory.NewRepo(db)
 
 	a.service = todoService.NewService(r)
 
@@ -90,4 +90,9 @@ func (a *App) Stop(ctx context.Context) error {
 
 	<-done
 	return nil
+}
+
+func initDB() []models.Todo {
+	res := make([]models.Todo, 0, 10)
+	return res
 }

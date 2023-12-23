@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strconv"
 	todoService "test_ms/internal/app/todos/service"
-	"test_ms/internal/pkg/models"
+	"test_ms/internal/models"
 
 	"github.com/gorilla/mux"
 )

@@ -2,14 +2,15 @@ package todoService
 
 import (
 	"context"
-	"test_ms/internal/pkg/models"
+	"test_ms/internal/app/todos/repo"
+	"test_ms/internal/models"
 )
 
 type Service struct {
-	repo ITodoRepository
+	repo repo.IRepository
 }
 
-func NewService(r ITodoRepository) *Service {
+func NewService(r repo.IRepository) *Service {
 	return &Service{
 		repo: r,
 	}
