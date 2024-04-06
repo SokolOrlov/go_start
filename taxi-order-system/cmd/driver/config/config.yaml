@@ -1,0 +1,19 @@
+http:
+  port: 6060
+db:
+  user: "postgres"
+  pwd: "postgres"
+  migrationPath: \cmd\driver\migrations\
+kafka:
+  broker:
+    url: localhost
+    port: 9093
+  consumer:
+    topic: driver
+    group: 1
+    assignor: range
+    oldest: true
+  producer:
+    topic: trip
+
+
