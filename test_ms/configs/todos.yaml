@@ -1,4 +1,0 @@
-http:
-  port: 8080
-db:
-  dns: "database"
