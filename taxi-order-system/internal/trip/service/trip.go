@@ -20,6 +20,7 @@ type Service struct {
 	cfg       *config.Config
 	log       *slog.Logger
 	produceCh chan models.Message
+	consumeCh chan common.KafkaMessage
 }
 
 // обработать входящее сообщение
@@ -84,6 +85,7 @@ func New(cfg *config.Config, log *slog.Logger, r ports.IRepository, produceCh ch
 		cfg:       cfg,
 		log:       log,
 		produceCh: produceCh,
+		consumeCh: consumeCh,
 	}
 
 	go func(s *Service) {

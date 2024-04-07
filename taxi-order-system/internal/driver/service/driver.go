@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"encoding/json"
 	"log/slog"
 	"qwe/internal/driver/models"
 	"qwe/internal/driver/ports"
@@ -75,8 +74,7 @@ func (s *Service) CaptureTrip(ctx context.Context, model models.CaptureTrip) err
 
 // обновить статус заявки
 func (s *Service) UpdateTripStatus(ctx context.Context, model models.CaptureTrip, st common.TripStatus) error {
-	modelstr, _ := json.Marshal(model)
-	s.log.Info("Service.UpdateTripStatus", slog.String("CaptureTrip", string(modelstr)), slog.String("status", st.String()))
+	s.log.Info("Service.UpdateTripStatus", slog.Any("CaptureTrip", model), slog.String("status", st.String()))
 
 	if st == common.ENDED {
 		err := s.repo.SetDriverToFree(ctx, model)
