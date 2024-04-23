@@ -70,7 +70,8 @@ func Run(consumeCh chan common.UpdateTripStatus, log *slog.Logger, cfg *config.K
 				if errors.Is(err, sarama.ErrClosedConsumerGroup) {
 					return
 				}
-				log.Error("Error from consumer: %v", err)
+				log.Debug("---->", slog.Any("cfg", cfg))
+				log.Error("kafkaConsumer consume error", err)
 			}
 			// check if context was cancelled, signaling that the consumer should stop
 			if ctx.Err() != nil {

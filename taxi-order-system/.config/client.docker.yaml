@@ -1,0 +1,20 @@
+http:
+  port: 5050
+db:
+  host: postgres
+  user: postgres
+  pwd: postgres
+  migrationPath: /migrations/
+kafka:
+  broker:
+    url: kafka
+    port: 9092
+  consumer:
+    topic: client
+    group: 1
+    assignor: range
+    oldest: true
+  producer:
+    topic: trip
+
+

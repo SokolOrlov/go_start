@@ -23,6 +23,7 @@ type Server struct {
 func (a *Server) Serve() error {
 	router := mux.NewRouter()
 
+	router.HandleFunc("/", a.Echo).Methods("GET")
 	router.HandleFunc("/api/v1/trips", a.CreateTrip).Methods("POST").Headers("Content-Type", "application/json")
 
 	a.server = &http.Server{

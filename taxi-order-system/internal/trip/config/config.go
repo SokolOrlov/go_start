@@ -6,6 +6,7 @@ type Config struct {
 }
 
 type DB struct {
+	HOST          string `yaml:"host"`
 	USER          string `yaml:"user"`
 	PWD           string `yaml:"pwd"`
 	MigrationPath string `yaml:"migrationPath"`

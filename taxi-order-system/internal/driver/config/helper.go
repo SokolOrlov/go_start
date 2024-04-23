@@ -9,7 +9,7 @@ import (
 
 func Read() (*Config, error) {
 	var filePath string
-	flag.StringVar(&filePath, "config", "./cmd/driver/config/config.yaml", "set config path")
+	flag.StringVar(&filePath, "c", "./cmd/driver/config/config.yaml", "set config path")
 	flag.Parse()
 
 	// if filePath == "" {

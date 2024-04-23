@@ -1,15 +1,16 @@
 http:
-  port: 5050
+  port: 6060
 db:
+  host: postgres
   user: "postgres"
   pwd: "postgres"
-  migrationPath: \cmd\client\migrations\
+  migrationPath: /migrations/
 kafka:
   broker:
-    url: localhost
-    port: 9093
+    url: kafka
+    port: 9092
   consumer:
-    topic: client
+    topic: driver
     group: 1
     assignor: range
     oldest: true

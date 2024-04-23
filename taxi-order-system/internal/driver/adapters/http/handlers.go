@@ -68,3 +68,14 @@ func (s *Server) updateTripStatus(r *http.Request, w http.ResponseWriter, st sta
 
 	writeJSONResponse(w, http.StatusOK, err)
 }
+
+// Echo implements ports.IHttp.
+func (s *Server) Echo(w http.ResponseWriter, r *http.Request) {
+
+	writeJSONResponse(w, http.StatusOK, "Driver servicer is running!")
+}
+
+func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
+	//TODO login
+	writeJSONResponse(w, http.StatusOK, "Driver servicer is running!")
+}

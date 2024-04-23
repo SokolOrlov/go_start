@@ -1,0 +1,20 @@
+db:
+  host: postgres
+  user: "postgres"
+  pwd: "postgres"
+  migrationPath: /migrations/
+kafka:
+  broker:
+    url: kafka
+    port: 9092
+  consumer:
+    topic: trip
+    group: 11
+    assignor: range
+    oldest: true
+  producer:
+    clientTopic: client
+    driverTopic: driver
+
+
+

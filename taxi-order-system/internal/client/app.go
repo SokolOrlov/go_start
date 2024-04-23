@@ -3,7 +3,6 @@ package client
 import (
 	"context"
 	"errors"
-	"fmt"
 	"log/slog"
 	gohttp "net/http"
 	"qwe/internal/client/adapters/http"
@@ -34,17 +33,20 @@ func (a *App) Start() error {
 
 	err := a.startHttp(log)
 	if err != nil {
-		return fmt.Errorf("%s: %w", op, err)
+		log.Error("http starting error", err)
+		return err
 	}
 
 	err = kafkaProducer.Run(a.produceCh, a.log, &a.cfg.KAFKA)
 	if err != nil {
-		return fmt.Errorf("%s: %w", op, err)
+		log.Error("kafkaProducer starting error", err)
+		return err
 	}
 
 	err = kafkaConsumer.Run(a.consumeCh, a.log, &a.cfg.KAFKA)
 	if err != nil {
-		return fmt.Errorf("%s: %w", op, err)
+		log.Error("kafkaConsumer starting error", err)
+		return err
 	}
 
 	return nil
@@ -70,7 +72,7 @@ func New(cfg *config.Config, log *slog.Logger) (*App, error) {
 	db, err := repository.New(&cfg.DB)
 
 	if err != nil {
-		return nil, err
+		return nil, errors.Join(errors.New("REPOSITORY"), err)
 	}
 
 	produceCh := make(chan models.Trip)

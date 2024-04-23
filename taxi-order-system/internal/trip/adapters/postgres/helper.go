@@ -10,7 +10,7 @@ import (
 )
 
 func openConnection(cfg *config.DB) (*sqlx.DB, error) {
-	source := fmt.Sprintf("user=postgres password=%v dbname=%v sslmode=disable", cfg.PWD, cfg.USER)
+	source := fmt.Sprintf("host=%v user=%v password=%v dbname=postgres sslmode=disable", cfg.HOST, cfg.USER, cfg.PWD)
 
 	db, err := sqlx.Connect("postgres", source)
 

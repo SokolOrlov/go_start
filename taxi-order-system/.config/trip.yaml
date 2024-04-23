@@ -1,4 +1,5 @@
 db:
+  host: localhost
   user: "postgres"
   pwd: "postgres"
   migrationPath: \cmd\trip\migrations\

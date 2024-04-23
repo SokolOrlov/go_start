@@ -31,3 +31,14 @@ func (s *Server) CreateTrip(w http.ResponseWriter, r *http.Request) {
 
 	writeJSONResponse(w, http.StatusOK, nil)
 }
+
+// Echo implements ports.IHttp.
+func (s *Server) Echo(w http.ResponseWriter, r *http.Request) {
+
+	writeJSONResponse(w, http.StatusOK, "Client service is running!")
+}
+
+func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
+	//TODO login
+	writeJSONResponse(w, http.StatusOK, "Driver servicer is running!")
+}
