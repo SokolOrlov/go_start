@@ -12,3 +12,8 @@ type IService interface {
 	//Обработаать входящее сообщение
 	HandleConsumerMessage(context.Context, common.UpdateTripStatus)
 }
+
+type BackgroundWorker interface {
+	Run()
+	Stop()
+}

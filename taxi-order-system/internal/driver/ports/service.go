@@ -15,3 +15,8 @@ type IService interface {
 	//Захватить заявку
 	CaptureTrip(context.Context, models.CaptureTrip) error
 }
+
+type BackgroundWorker interface {
+	Run()
+	Stop()
+}

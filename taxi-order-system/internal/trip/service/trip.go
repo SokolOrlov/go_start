@@ -14,6 +14,7 @@ import (
 )
 
 var _ ports.IService = &Service{}
+var _ ports.BackgroundWorker = &Service{}
 
 type Service struct {
 	repo      ports.IRepository
@@ -21,6 +22,19 @@ type Service struct {
 	log       *slog.Logger
 	produceCh chan models.Message
 	consumeCh chan common.KafkaMessage
+}
+
+func (s *Service) Run() {
+	go func(s *Service) {
+		for {
+			m := <-s.consumeCh
+			s.HandleConsumerMessage(context.Background(), m)
+		}
+	}(s)
+}
+
+func (s *Service) Stop() {
+	close(s.consumeCh)
 }
 
 // обработать входящее сообщение
@@ -87,13 +101,6 @@ func New(cfg *config.Config, log *slog.Logger, r ports.IRepository, produceCh ch
 		produceCh: produceCh,
 		consumeCh: consumeCh,
 	}
-
-	go func(s *Service) {
-		for {
-			m := <-consumeCh
-			s.HandleConsumerMessage(context.Background(), m)
-		}
-	}(s)
 
 	return s
 }

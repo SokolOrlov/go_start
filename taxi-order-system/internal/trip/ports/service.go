@@ -9,3 +9,8 @@ type IService interface {
 	//обработать входящее сообщение
 	HandleConsumerMessage(context.Context, common.KafkaMessage) error
 }
+
+type BackgroundWorker interface {
+	Run()
+	Stop()
+}

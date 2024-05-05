@@ -39,6 +39,8 @@ func (a *App) Start() error {
 		return fmt.Errorf("%s: %w", op, err)
 	}
 
+	a.service.Run()
+
 	return nil
 }
 
@@ -49,6 +51,8 @@ func (a *App) Stop() {
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
 	defer cancel()
+
+	a.service.Stop()
 
 	<-ctx.Done()
 	log.Info("bye.")

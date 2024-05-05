@@ -22,6 +22,7 @@ type App struct {
 	cfg       *config.Config
 	produceCh chan common.UpdateTripStatus
 	consumeCh chan common.Trip
+	service   *service.Service
 }
 
 func (a *App) Start() error {
@@ -46,6 +47,8 @@ func (a *App) Start() error {
 		return fmt.Errorf("%s: %w", op, err)
 	}
 
+	a.service.Run()
+
 	return nil
 }
 
@@ -60,6 +63,8 @@ func (a *App) Stop() {
 	log.Info("stopping http server", slog.String("port", a.cfg.HTTP.PORT))
 
 	a.http.Shutdown(ctx)
+
+	a.service.Stop()
 
 	<-ctx.Done()
 	log.Info("bye.")
@@ -84,6 +89,7 @@ func New(cfg *config.Config, log *slog.Logger) (*App, error) {
 		cfg:       cfg,
 		produceCh: produceCh,
 		consumeCh: consumeCh,
+		service:   svc,
 	}, nil
 }
 

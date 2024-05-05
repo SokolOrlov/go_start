@@ -9,12 +9,30 @@ import (
 )
 
 var _ ports.IService = &Service{}
+var _ ports.BackgroundWorker = &Service{}
 
 type Service struct {
 	repo      ports.IRepository
 	produceCh chan common.UpdateTripStatus
 	consumeCh chan common.Trip
 	log       *slog.Logger
+}
+
+func (s *Service) Run() {
+	go func(s *Service) {
+		for {
+			m := <-s.consumeCh
+			err := s.HandleConsumerMessage(context.Background(), m)
+
+			if err != nil {
+				s.log.Error("Error service handle message", err)
+			}
+		}
+	}(s)
+}
+
+func (s *Service) Stop() {
+	close(s.consumeCh)
 }
 
 // Обработать входящее сообщение
@@ -97,17 +115,6 @@ func New(r ports.IRepository, log *slog.Logger, produceCh chan common.UpdateTrip
 		consumeCh: consumeCh,
 		log:       log,
 	}
-
-	go func(s *Service) {
-		for {
-			m := <-consumeCh
-			err := s.HandleConsumerMessage(context.Background(), m)
-
-			if err != nil {
-				log.Error("Error service handle message", err)
-			}
-		}
-	}(s)
 
 	return s
 }
